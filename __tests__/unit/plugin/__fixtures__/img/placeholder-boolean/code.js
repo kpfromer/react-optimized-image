@@ -4,6 +4,6 @@ import Image from './image.png';
 
 export default () => (
   <div>
-    <Img src={Image} webp />
+    <Img src={Image} placeholder />
   </div>
 );

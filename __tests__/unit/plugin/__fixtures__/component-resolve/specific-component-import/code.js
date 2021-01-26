@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'react-optimized-image/lib/components/Svg';
+import Icon from 'kpfromer-react-optimized-image/lib/components/Svg';
 
 export default () => (
   <div>

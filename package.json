@@ -99,8 +99,8 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write",
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
+    "**/!(__tests__)/*.{js,jsx,ts,tsx,md,html,css}": "prettier --write",
+    "**/!(__tests__)/*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "husky": {
     "hooks": {

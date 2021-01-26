@@ -4,7 +4,7 @@ import plugin from '../../../lib/plugin';
 
 pluginTester({
   plugin,
-  pluginName: 'react-optimized-image',
+  pluginName: 'kpfromer-react-optimized-image',
   babelrc: false,
   fixtures: path.join(__dirname, '__fixtures__', 'component-resolve'),
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Icon = require('react-optimized-image').Svg;
-const Img = require('react-optimized-image').default;
+const Icon = require('kpfromer-react-optimized-image').Svg;
+const Img = require('kpfromer-react-optimized-image').default;
 
 export default () => (
   <div>

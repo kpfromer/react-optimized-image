@@ -1,5 +1,5 @@
 import React from 'react';
-import Img, { Svg } from 'react-optimized-image';
+import Img, { Svg } from 'kpfromer-react-optimized-image';
 import styled from '@emotion/styled';
 import SvgImage from './image.svg';
 import JpgImage from './image.jpg';

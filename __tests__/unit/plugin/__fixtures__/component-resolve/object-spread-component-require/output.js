@@ -1,6 +1,6 @@
 import React from 'react';
 
-const { Svg, Img } = require('react-optimized-image');
+const { Svg, Img } = require('kpfromer-react-optimized-image');
 
 export default () => (
   <div>

@@ -4,18 +4,15 @@ import Image from './image.png';
 export default () => (
   <div>
     <Img
-      src={require('./image.png?url')}
-      url
-      sizes={[400, 800]}
+      src={Image}
+      placeholder="lqip"
       rawSrc={{
         fallback: {
-          400: {
-            1: require('./image.png?url&width=400'),
-          },
-          800: {
-            1: require('./image.png?url&width=800'),
+          original: {
+            1: require('./image.png'),
           },
         },
+        placeholder: require('./image.png?lqip'),
       }}
     />
   </div>

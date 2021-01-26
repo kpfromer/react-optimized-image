@@ -1,7 +1,7 @@
 import React from 'react';
 
-const { Svg } = require('react-optimized-image');
-const Img = require('react-optimized-image').default;
+const { Svg } = require('kpfromer-react-optimized-image');
+const Img = require('kpfromer-react-optimized-image').default;
 
 const ProxySvg = Svg;
 const Icon = ProxySvg;

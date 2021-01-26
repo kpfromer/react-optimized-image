@@ -2,6 +2,7 @@ import appRoot from 'app-root-path';
 
 export interface ImageConfig {
   webp?: boolean;
+  placeholder?: boolean | 'trace' | 'lqip';
   sizes?: number[];
   densities?: number[];
   breakpoints?: number[];

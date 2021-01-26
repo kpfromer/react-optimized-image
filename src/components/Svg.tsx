@@ -15,7 +15,7 @@ const Svg = ({ src, ...props }: SvgProps): ReactElement => {
 
   if (!rawSrc) {
     throw new Error(
-      "Babel plugin 'react-optimized-image/plugin' not installed or this component could not be recognized by it.",
+      "Babel plugin 'kpfromer-react-optimized-image/plugin' not installed or this component could not be recognized by it.",
     );
   }
 

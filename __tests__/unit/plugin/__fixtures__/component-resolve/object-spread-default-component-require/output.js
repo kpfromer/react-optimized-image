@@ -1,6 +1,6 @@
 import React from 'react';
 
-const { default: Img } = require('react-optimized-image');
+const { default: Img } = require('kpfromer-react-optimized-image');
 
 export default () => (
   <div>

@@ -31,8 +31,8 @@ import { Babel } from '..';
 const simplifyExportName = (exportName: string, importPath: string): string => {
   // handle path specific imports like react-optimized-image/lib/components/Svg
   if (exportName === 'default') {
-    if (importPath.startsWith('react-optimized-image/lib/components/')) {
-      return importPath.replace('react-optimized-image/lib/components/', '');
+    if (importPath.startsWith('kpfromer-react-optimized-image/lib/components/')) {
+      return importPath.replace('kpfromer-react-optimized-image/lib/components/', '');
     }
   }
 
@@ -102,7 +102,7 @@ const resolveImport = (binding: Binding | undefined): { exportName?: string; mod
   if (binding && binding.kind !== 'module' && binding.path.node.type === 'VariableDeclarator') {
     const { node } = binding.path;
 
-    // check for require('react-optimized-image').default calls
+    // check for require('kpfromer-react-optimized-image').default calls
     if (node.init && node.init.type === 'MemberExpression' && node.init.object.type === 'CallExpression') {
       return {
         moduleName: resolveRequireModule(node.init.object),
@@ -110,7 +110,7 @@ const resolveImport = (binding: Binding | undefined): { exportName?: string; mod
       };
     }
 
-    // check for `const { Svg } = require('react-optimized-image')` or `styled(Img)({})  calls
+    // check for `const { Svg } = require('kpfromer-react-optimized-image')` or `styled(Img)({})  calls
     if (node.init && node.init.type === 'CallExpression') {
       // handle styled-components
       if (node.init.callee.type === 'CallExpression' && node.init.callee.callee.type === 'Identifier') {
@@ -160,7 +160,8 @@ const resolveImport = (binding: Binding | undefined): { exportName?: string; mod
  * @returns {{ exportName?: string; moduleName?: string } | undefined}
  */
 const resolveLocalImportBinding = (binding: Binding, moduleName: string, exportName: string): Binding | undefined => {
-  if (binding.path.hub.file.opts.filename) {
+  // TODO: better data
+  if ((binding.path.hub as any).file.opts.filename) {
     // resolve and parse file
     const filePath = resolveFilePathSync(binding.path, moduleName);
 
@@ -168,7 +169,8 @@ const resolveLocalImportBinding = (binding: Binding, moduleName: string, exportN
       return undefined;
     }
 
-    const parsedFile = loadFileSync(filePath, binding.path.hub.file.opts.parserOpts);
+    // TODO: better data
+    const parsedFile = loadFileSync(filePath, (binding.path.hub as any).file.opts.parserOpts);
     const exploded = explodeModule(parsedFile.path.parent);
     const exportStatement = exploded.exports.find((e: { external: string }) => e.external === exportName);
 
@@ -207,7 +209,7 @@ const getImportedJsxComponent = (binding: Binding | undefined): string | undefin
     resolved &&
     resolved.exportName &&
     resolved.moduleName &&
-    isModule(resolved.moduleName, 'react-optimized-image')
+    isModule(resolved.moduleName, 'kpfromer-react-optimized-image')
   ) {
     return simplifyExportName(resolved.exportName, resolved.moduleName);
   }
@@ -248,7 +250,8 @@ const resolveMemberExpression = (node: MemberExpression): string[] => {
     bindings.push(node.object.name);
   }
 
-  bindings.push(node.property.name);
+  // TODO: better data
+  bindings.push((node.property as any).name);
 
   return bindings;
 };
@@ -264,13 +267,14 @@ const resolveObjectProperty = (path: NodePath<ObjectExpression>, property: Objec
   let bindings: string[] = [];
   const parent = path.findParent(() => true);
 
-  if (parent.node.type === 'ObjectProperty') {
+  if (parent?.node.type === 'ObjectProperty') {
     bindings = [...resolveObjectProperty(parent.findParent(() => true) as NodePath<ObjectExpression>, parent.node)];
-  } else if (parent.node.type === 'VariableDeclarator' && parent.node.id.type === 'Identifier') {
+  } else if (parent?.node.type === 'VariableDeclarator' && parent.node.id.type === 'Identifier') {
     bindings.push(parent.node.id.name);
   }
 
-  bindings.push(property.key.name);
+  // TODO: better data
+  bindings.push((property.key as any).name);
 
   return bindings;
 };
@@ -320,10 +324,11 @@ const resolveObject = (types: Babel['types'], path: NodePath<JSXElement>, bindin
   let initializer;
 
   // search for object declaration
-  program.traverse({
+  program?.traverse({
     // styles.StyledImg = ...
     MemberExpression(exPath: NodePath<MemberExpression>) {
-      if (exPath.node.property && exPath.node.property.name === variableName) {
+      // TODO: better data
+      if (exPath.node.property && (exPath.node.property as any).name === variableName) {
         const exBindings = resolveMemberExpression(exPath.node);
 
         if (arraysMatch(bindings, exBindings) && exPath.parent.type === 'AssignmentExpression') {

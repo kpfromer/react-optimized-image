@@ -1,5 +1,5 @@
 import React from 'react';
-import Img, { Svg } from 'react-optimized-image';
+import Img, { Svg } from 'kpfromer-react-optimized-image';
 export default () => (
   <div>
     <Svg rawSrc={require('./image.svg?include')} />

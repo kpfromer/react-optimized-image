@@ -1,5 +1,5 @@
 import React from 'react';
-import Img from 'react-optimized-image';
+import Img from 'kpfromer-react-optimized-image';
 const imageName = 'image.png';
 export default () => (
   <div>

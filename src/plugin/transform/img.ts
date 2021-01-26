@@ -2,7 +2,13 @@ import { NodePath } from '@babel/core';
 import { JSXElement, JSXAttribute, JSXOpeningElement, CallExpression, ObjectProperty } from '@babel/types';
 import clone from 'clone';
 import { Babel } from '..';
-import { getAttribute, getBooleanAttribute, getNumberedArrayAttribute, getTypeAttribute } from '../utils/jsx';
+import {
+  getAttribute,
+  getBooleanAttribute,
+  getBooleanOrStringAttribute,
+  getNumberedArrayAttribute,
+  getTypeAttribute,
+} from '../utils/jsx';
 import { buildRequireStatement } from '../utils/transform';
 import { getRequireArguments } from '../utils/traverse';
 import { ImageConfig, getGlobalConfig } from '../imageConfig';
@@ -42,6 +48,18 @@ const buildConfig = (types: Babel['types'], path: NodePath<JSXElement>): ImageCo
       );
     }
   });
+
+  // Placeholder
+  const placeholder = getBooleanOrStringAttribute(path, 'placeholder');
+  if (typeof placeholder !== 'undefined') {
+    (config as Record<string, unknown>).placeholder = placeholder;
+  } else if (typeof placeholder === 'undefined' && (config as Record<string, unknown>).placeholder === true) {
+    // add attr from global image config
+    (path.get('openingElement') as NodePath<JSXOpeningElement>).pushContainer(
+      'attributes',
+      types.jsxAttribute(types.jsxIdentifier('placeholder'), null),
+    );
+  }
 
   // get sizes
   const sizes = getNumberedArrayAttribute(path, 'sizes');
@@ -155,6 +173,25 @@ const buildRawSrcAttribute = (
 
     properties.push(types.objectProperty(types.identifier(type), types.objectExpression(typeProperties)));
   });
+
+  // rawSrc = {...rawSrc, placeholder: require(`imagepath?width=100&trace`)}
+  if (config.placeholder) {
+    if (config.placeholder === true || config.placeholder === 'trace') {
+      properties.push(
+        types.objectProperty(
+          types.stringLiteral('placeholder'),
+          buildRequireStatement(types, clone(requireArgs), { width: '20', trace: '' }),
+        ),
+      );
+    } else {
+      properties.push(
+        types.objectProperty(
+          types.stringLiteral('placeholder'),
+          buildRequireStatement(types, clone(requireArgs), { lqip: '' }),
+        ),
+      );
+    }
+  }
 
   return types.jsxAttribute(
     types.jsxIdentifier('rawSrc'),

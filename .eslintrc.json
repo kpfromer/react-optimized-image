@@ -33,6 +33,8 @@
     "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
     "react/jsx-props-no-spreading": "off",
     "jsx-a11y/alt-text": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "react/prop-types": "off",
+    "no-unused-expressions": "off"
   }
 }
